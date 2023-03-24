@@ -2,15 +2,21 @@
 /* eslint-disable semi */
 
 const { response } = require('express');
+const Bird = require('../models/bird')
 
-const getBird = (req, res = response) => {
+const getBird = async (req, res = response) => {
+  const birds = await Bird.find()
   res.json({
-    message: 'get birds'
+    birds
   })
 }
 
-const postBird = (req, res = response) => {
-  const bird = req.body
+const postBird = async (req, res = response) => {
+  const body = req.body;
+  const bird = new Bird(body);
+
+  await bird.save()
+
   res.json({
     bird
   });
